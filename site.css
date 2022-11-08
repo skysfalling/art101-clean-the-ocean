@@ -1,0 +1,77 @@
+
+.header{
+    color: rgb(255, 255, 255);
+    /* background-color: black; */
+    font-size: 30px;
+    width: 60%;
+
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+body{
+    background-color: #000000;
+    margin : 0px auto;
+    margin-left: 5%;
+}
+
+html {
+    background-color: #51baee;
+    background-size: cover;
+    height: 100%;
+}
+
+
+.header-overlay{
+    background-color: rgb(192, 136, 248);
+    z-index: 9;
+    margin: 20px;
+}
+
+/* ===================== Positions around a div ======================== */
+
+/* Bottom left text */
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+}
+
+/* Top left text */
+.top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+}
+
+/* Top right text */
+.top-right {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+}
+
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Top Centered text */
+.top-centered {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
