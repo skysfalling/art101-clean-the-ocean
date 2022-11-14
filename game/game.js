@@ -1,6 +1,10 @@
 var allEnemies;
 var player;
 
+// CREATE BUBBLE IMAGE
+const bubbleImg = new Image();
+bubbleImg.src = "img/bubble1.png";
+
 var myGameArea = {
     
     canvas: document.getElementById("gameCanvas"),
@@ -18,11 +22,11 @@ var myGameArea = {
 function startGame() {
     player = new component(50, 50, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
 
-    box = new component(100, 100, "lightgreen", (myGameArea.canvas.width / 2) + 150, 85, "box1", 4);
+    box = new component(100, 100, "lightgreen", (myGameArea.canvas.width / 2) + 150, 85, "box1", bubbleImg , 4);
     box.speedX = 2; //give box start speed
     box.speedY = -2;
 
-    box2 = new component(75, 75, "pink", (myGameArea.canvas.width / 2) - 150, 50, "box2", 4);
+    box2 = new component(75, 75, "pink", (myGameArea.canvas.width / 2) - 150, 50, "box2", bubbleImg, 4);
     box2.speedX = 2;
     box2.speedY = 4;
 
@@ -33,7 +37,7 @@ function startGame() {
 }
 
 
-function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
+function component(width, height, color, x, y, name, img = null, bounceBackSpeed = 2) {
     this.color = color;
     this.width = width;
     this.height = height;
@@ -46,6 +50,7 @@ function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
     this.y = y;
     this.name = name;
     this.isDead = false;
+    this.img = img;
     this.bounceBackSpeed = bounceBackSpeed;
 
     this.update = function () {
@@ -53,9 +58,9 @@ function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
-        var bubbleImg = document.getElementById("bubble");
-        ctx.drawImage(bubbleImg, this.x, this.y, 100, 100);
-
+        if (this.img != null){
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        }
 
         ctx.font = "10px Arial";
 
@@ -272,9 +277,19 @@ function updateGameArea() {
 
 function scrollToPlayer()
 {
-    if (player.move)
-    window.scrollTo(player.x, player.y - window.innerHeight / 2);
+    if (player.speedY < -2)
+    {
+        window.scrollTo(player.x, player.y + window.innerHeight / 4);
+    }
+    else if (player.speedY > 2)
+    {
+        window.scrollTo(player.x, player.y - window.innerHeight / 2);
+    }
 }
+
+function lerp(start, end, speed) { 
+    return start + (end - start) * speed; 
+} 
 
 function checkGameEnd(){
     if (player.isDead)
