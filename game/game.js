@@ -1,8 +1,6 @@
 var allEnemies;
 var player;
 
-var bubbleImg = document.getElementById
-
 var myGameArea = {
     
     canvas: document.getElementById("gameCanvas"),
@@ -35,7 +33,7 @@ function startGame() {
 }
 
 
-function component(width, height, color, x, y, name, image = null, bounceBackSpeed = 2) {
+function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
     this.color = color;
     this.width = width;
     this.height = height;
@@ -48,13 +46,16 @@ function component(width, height, color, x, y, name, image = null, bounceBackSpe
     this.y = y;
     this.name = name;
     this.isDead = false;
-    this.image = image;
     this.bounceBackSpeed = bounceBackSpeed;
 
     this.update = function () {
         ctx = myGameArea.context;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        var bubbleImg = document.getElementById("bubble");
+        ctx.drawImage(bubbleImg, this.x, this.y, 100, 100);
+
 
         ctx.font = "10px Arial";
 
@@ -271,6 +272,7 @@ function updateGameArea() {
 
 function scrollToPlayer()
 {
+    if (player.move)
     window.scrollTo(player.x, player.y - window.innerHeight / 2);
 }
 
