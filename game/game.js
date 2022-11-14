@@ -1,6 +1,8 @@
 var allEnemies;
 var player;
 
+var bubbleImg = document.getElementById
+
 var myGameArea = {
     
     canvas: document.getElementById("gameCanvas"),
@@ -33,7 +35,7 @@ function startGame() {
 }
 
 
-function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
+function component(width, height, color, x, y, name, image = null, bounceBackSpeed = 2) {
     this.color = color;
     this.width = width;
     this.height = height;
@@ -46,6 +48,7 @@ function component(width, height, color, x, y, name, bounceBackSpeed = 2) {
     this.y = y;
     this.name = name;
     this.isDead = false;
+    this.image = image;
     this.bounceBackSpeed = bounceBackSpeed;
 
     this.update = function () {
