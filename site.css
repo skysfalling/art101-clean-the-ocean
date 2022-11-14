@@ -22,6 +22,15 @@ html {
     margin: 20px;
 }
 
+.buuble{
+  position: absolute;
+}
+
+#hello {
+  font-size: 50px;
+  bottom: 50%;
+  z-index: 2;
+}
 /* ===================== Positions around a div ======================== */
 
 /* Bottom left text */
