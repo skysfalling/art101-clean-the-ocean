@@ -26,10 +26,14 @@ html {
   position: absolute;
 }
 
-#hello {
-  font-size: 50px;
-  bottom: 50%;
-  z-index: 2;
+.bubble-info {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    font-size: 20px;
+    color: black;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 /* ===================== Positions around a div ======================== */
 
