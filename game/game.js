@@ -5,6 +5,16 @@ var player;
 const bubbleImg = new Image();
 bubbleImg.src = "img/bubble1.png";
 
+
+// CREATE FISH ANIMATION
+const frame1 = new Image();
+frame1.src = "img/bubble1.png";
+const frame2 = new Image();
+frame2.src = "img/fishplayer_frame1.png";
+var playerAnim = [frame1, frame2];
+
+
+
 var myGameArea = {
     
     canvas: document.getElementById("gameCanvas"),
@@ -12,7 +22,7 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
-
+        this.animation = setInterval(animationHandler, 240);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -20,7 +30,12 @@ var myGameArea = {
 }
 
 function startGame() {
-    player = new component(50, 50, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
+    myGameArea.start();
+
+    player = new component(500, 500, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
+    player.animateImgs = playerAnim;
+    player.start();
+
 
     box = new component(100, 100, "lightgreen", (myGameArea.canvas.width / 2) + 150, 85, "box1", bubbleImg , 4);
     box.speedX = 2; //give box start speed
@@ -32,8 +47,6 @@ function startGame() {
 
     // set enemies
     allEnemies = [box, box2];
-
-    myGameArea.start();
 }
 
 
@@ -43,7 +56,7 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;
-    this.speedLimit = 5;
+    this.speedLimit = 20;
     this.startX = x;
     this.startY = y;
     this.x = x;
@@ -52,6 +65,27 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
     this.isDead = false;
     this.img = img;
     this.bounceBackSpeed = bounceBackSpeed;
+    this.img = img;
+    this.animateImgs = [];
+    this.currAnimationFrame = 0;
+
+    this.animate = function(){
+        ctx = myGameArea.context;
+        ctx.drawImage(playerAnim[this.currAnimationFrame], this.x, this.y, this.width, this.height);
+        
+        // check if frame is more than length
+        if (this.currAnimationFrame < this.animateImgs.length - 1){
+            this.currAnimationFrame += 1;
+        }
+        else {this.currAnimationFrame = 0;}
+    }
+
+    this.start = function(){
+        //console.log("Start called");
+        ctx = myGameArea.context;
+        ctx.fillStyle = this.color;
+        //setInterval(this.animate(), 30);
+    }
 
     this.update = function () {
         ctx = myGameArea.context;
@@ -59,7 +93,7 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
         ctx.fillRect(this.x, this.y, this.width, this.height);
 
         if (this.img != null){
-            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+            //ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
         }
 
         ctx.font = "10px Arial";
@@ -273,18 +307,16 @@ function updateGameArea() {
     
 }
 
+function animationHandler(){
+    player.animate();
+}
+
 // ==================== HELPER FUNCTIONS ==============================
 
 function scrollToPlayer()
 {
-    if (player.speedY < -2)
-    {
-        window.scrollTo(player.x, player.y + window.innerHeight / 4);
-    }
-    else if (player.speedY > 2)
-    {
-        window.scrollTo(player.x, player.y - window.innerHeight / 2);
-    }
+
+    window.scrollTo(player.x, player.y - window.innerHeight / 2);
 }
 
 function lerp(start, end, speed) { 

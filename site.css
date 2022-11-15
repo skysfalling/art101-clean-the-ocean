@@ -28,16 +28,15 @@ html {
 
 .bubble-info {
     position: absolute;
-    top: 20%;
     font-size: 18px;
     color: black;
-    padding-left: 20px;
-    padding-right: 30px;
+    top: 10%;
+    padding-left: 20%;
+    padding-right: 20%;
 }
 #bubble-header {
-  left: 200px;
-  font-size: 30px;
-
+    padding-left: 20%;
+    font-size: 40px;
 }
 /* ===================== Positions around a div ======================== */
 
