@@ -8,11 +8,14 @@ bubbleImg.src = "img/bubble1.png";
 
 // CREATE FISH ANIMATION
 const frame1 = new Image();
-frame1.src = "img/bubble1.png";
+frame1.src = "img/playerAnim/frame1.png";
 const frame2 = new Image();
-frame2.src = "img/fishplayer_frame1.png";
-var playerAnim = [frame1, frame2];
-
+frame2.src = "img/playerAnim/frame2.png";
+const frame3 = new Image();
+frame3.src = "img/playerAnim/frame3.png";
+const frame4 = new Image();
+frame4.src = "img/playerAnim/frame4.png";
+var playerAnim = [frame1, frame2, frame3, frame4];
 
 
 var myGameArea = {
@@ -32,10 +35,8 @@ var myGameArea = {
 function startGame() {
     myGameArea.start();
 
-    player = new component(500, 500, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
+    player = new component(100, 100, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
     player.animateImgs = playerAnim;
-    player.start();
-
 
     box = new component(100, 100, "lightgreen", (myGameArea.canvas.width / 2) + 150, 85, "box1", bubbleImg , 4);
     box.speedX = 2; //give box start speed
@@ -71,7 +72,7 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
 
     this.animate = function(){
         ctx = myGameArea.context;
-        ctx.drawImage(playerAnim[this.currAnimationFrame], this.x, this.y, this.width, this.height);
+        this.img = playerAnim[this.currAnimationFrame]; // update current animation
         
         // check if frame is more than length
         if (this.currAnimationFrame < this.animateImgs.length - 1){
@@ -80,23 +81,13 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
         else {this.currAnimationFrame = 0;}
     }
 
-    this.start = function(){
-        //console.log("Start called");
-        ctx = myGameArea.context;
-        ctx.fillStyle = this.color;
-        //setInterval(this.animate(), 30);
-    }
-
     this.update = function () {
         ctx = myGameArea.context;
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
 
         if (this.img != null){
-            //ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+            drawComponent(this, this.img);
         }
-
-        ctx.font = "10px Arial";
 
         this.setCorners();
         this.newPos();
@@ -104,7 +95,6 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
     }
 
     this.reset = function(){
-
         this.x = this.startX;
         this.y = this.startY;
         this.isDead = false;
@@ -147,8 +137,8 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
         this.x += this.speedX;
         this.y += this.speedY;
 
-        ctx.fillText("speedX : " + this.speedX, this.corner3[0] - this.width, this.corner3[1] + 20); //shows x speed
-        ctx.fillText("speedY : " + this.speedY, this.corner3[0] - this.width, this.corner3[1] + 30); //shows y speed
+        //ctx.fillText("speedX : " + this.speedX, this.corner3[0] - this.width, this.corner3[1] + 20); //shows x speed
+        //ctx.fillText("speedY : " + this.speedY, this.corner3[0] - this.width, this.corner3[1] + 30); //shows y speed
     }
 
     // <<<< COLLIDE WITH OTHER COMPONENTS >>>>
@@ -190,6 +180,7 @@ function component(width, height, color, x, y, name, img = null, bounceBackSpeed
         }
     }
 
+    // <<<< COLLIDE WITH WALL >>>>
     this.checkCollideWithWall = function (canvas_width, canvas_height, bounceBackSpeed) {
 
         ctx = myGameArea.context;
@@ -288,6 +279,9 @@ function KeyDownListener() {
 function updateGameArea() {
     // refresh
     myGameArea.clear();
+    myGameArea.canvas.width = window.innerWidth - 50;
+
+
     checkGameEnd();
 
     // input listener
@@ -312,6 +306,19 @@ function animationHandler(){
 }
 
 // ==================== HELPER FUNCTIONS ==============================
+
+//                          component >> img
+function drawComponent(com, img)
+{
+
+
+    //            draw curr img,    offset position of image based off of scale 
+    ctx.drawImage(img, com.x - com.width/2, com.y - com.height/2, com.width * 2, com.height * 2);
+
+
+
+}
+
 
 function scrollToPlayer()
 {
