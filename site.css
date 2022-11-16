@@ -4,33 +4,32 @@
     height: 200px;
     background-color: #39baff53;
 
+    text-align: center;
+
     /* center on page */
     position: absolute;
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
+    
 }
 
 .header #title{
     color: white;
     font-size: 80px;
     width: 80%;
-
-    padding-left: 20%;;
-
 }
 
 .header #info{
     color: white;
     font-size: 20px;
-    padding-left: 35%;
 }
 
 html {
     background-image: url("game/img/background2.jpg");
     background-size: cover;
     height: 100%;
-    font-family: 'Trebuchet MS';
+    font-family: 'Papyrus';
 }
 
 .header-overlay{

@@ -1,4 +1,4 @@
-var allEnemies;
+var allEnemies = [];
 var player;
 
 // CREATE BUBBLE IMAGE
@@ -35,28 +35,19 @@ var myGameArea = {
 function startGame() {
     myGameArea.start();
 
-    player = new component(100, 100, "red", (myGameArea.canvas.width / 2) - 25, 120, "player");
+    player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player");
     player.animateImgs = playerAnim;
 
-    box = new component(100, 100, "lightgreen", (myGameArea.canvas.width / 2) + 150, 85, "box1", bubbleImg , 4);
-    box.speedX = 2; //give box start speed
-    box.speedY = -2;
-
-    box2 = new component(75, 75, "pink", (myGameArea.canvas.width / 2) - 150, 50, "box2", bubbleImg, 4);
-    box2.speedX = 2;
-    box2.speedY = 4;
-
-    // set enemies
-    allEnemies = [box, box2];
+    randomSpawnEnemies(20, [10, 100], [-5, 5]);
 }
 
 
-function component(width, height, color, x, y, name, img = null, bounceBackSpeed = 2) {
-    this.color = color;
+function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
+    this.color = "red";
     this.width = width;
     this.height = height;
-    this.speedX = 0;
-    this.speedY = 0;
+    this.speedX = 2;
+    this.speedY = 2;
     this.speedLimit = 20;
     this.startX = x;
     this.startY = y;
@@ -292,17 +283,30 @@ function updateGameArea() {
 
     //keeps components updated
     player.update();
-    box.update();
-    box2.update();
+
 
     // collide with enemies
-    player.checkCollideWithComponent(box);
-    player.checkCollideWithComponent(box2);
+    //player.checkCollideWithComponent(box);
+    //player.checkCollideWithComponent(box2);
     
 }
 
 function animationHandler(){
     player.animate();
+}
+
+function randomSpawnEnemies(count , sizeRange, initSpeedRange){
+
+    for (i = 0; i < sizeRange; i++)
+    {
+        randSize = getRandomInt(sizeRange[0], sizeRange[1]);
+        randYPos = getRandomInt(randSize, myGameArea.canvas.height - randSize);
+
+        box = new component(randSize, randSize,(myGameArea.canvas.width / 2) + randSize, randYPos, "trash", bubbleImg , 4);
+        box.speedX = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+        box.speedY = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+
+    }
 }
 
 // ==================== HELPER FUNCTIONS ==============================
@@ -323,7 +327,7 @@ function drawComponent(com, img)
 function scrollToPlayer()
 {
 
-    window.scrollTo(player.x, player.y - window.innerHeight / 2);
+    window.scrollTo(player.x, player.y - window.innerHeight / 4);
 }
 
 function lerp(start, end, speed) { 
@@ -335,6 +339,12 @@ function checkGameEnd(){
     {
         player.reset();
     }
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // ====================== MOVEMENT ===============================
