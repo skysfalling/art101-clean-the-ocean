@@ -1,6 +1,13 @@
 
 
 
+/* ****
+
+
+
+
+***** */
+
 // CREATE ARRAY OF TRASH IMAGES
 const trash1_img = new Image();
 trash1_img.src = "../img/trash1.png";
@@ -14,8 +21,20 @@ var trash_imgs = [trash1_img, trash2_img, trash3_img, trash4_img];
 
 // CREATE BUBBLE IMAGE
 const bubbleImg = new Image();
-bubbleImg.src = "../img/bubble1.png";
-
+bubbleImg.src = "../img/bubblepop_frame1.png";
+const bubblepop_2 = new Image();
+bubblepop_2.src = "../img/bubblepop_frame2.png";
+const bubblepop_3 = new Image();
+bubblepop_3.src = "../img/bubblepop_frame3.png";
+const bubblepop_4 = new Image();
+bubblepop_4.src = "../img/bubblepop_frame4.png";
+const bubblepop_5 = new Image();
+bubblepop_5.src = "../img/bubblepop_frame5.png";
+const bubblepop_6 = new Image();
+bubblepop_6.src = "../img/bubblepop_frame6.png";
+const bubblepop_7 = new Image();
+bubblepop_7.src = "../img/bubblepop_frame7.png";
+var bubblePopAnim = [bubbleImg, bubblepop_2, bubblepop_3, bubblepop_4, bubblepop_5, bubblepop_6, bubblepop_7]
 
 // CREATE FISH ANIMATION
 const frame1 = new Image();
@@ -40,7 +59,6 @@ var myGameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
-        this.animation = setInterval(animationHandler, 240);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -50,18 +68,18 @@ var myGameArea = {
 function startGame() {
     myGameArea.start();
 
-    player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player");
-    player.animateImgs = playerAnim;
+    player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player", playerAnim[0], 2, playerAnim);
+    player.start_animation();
 
     // random spawn enemies
-    randomSpawnComponents(20, [50, 150], [-2, 2], trash_imgs, trash_components, "trash");
+    //randomSpawnComponents(20, [50, 150], [-2, 2], trash_imgs, trash_components, "trash");
 
     // random spawn bubbles
-    randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble");
+    randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
 }
 
 
-function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
+function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, animateImgs = []) {
     this.color = "red";
     this.width = width;
     this.height = height;
@@ -76,22 +94,45 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
     this.isDead = false;
     this.img = img;
     this.bounceBackSpeed = bounceBackSpeed;
-    this.animateImgs = [];
+    var animation = animateImgs;
     this.currAnimationFrame = 0;
 
-    this.animate = function(loop = true){
+    this.start_animation = function(){
+        this.animation = setInterval(this.animate, 240);
+    }
+
+    this.animate = function(loop = true, kill = false){
         ctx = myGameArea.context;
+<<<<<<< Updated upstream
         this.img = playerAnim[this.currAnimationFrame]; // update current animation
 
+=======
+<<<<<<< HEAD
+
+        console.log("animate", this.animateImgs);
+
+        this.img = this.animateImgs[0]; // update current animation
+        
+=======
+        this.img = playerAnim[this.currAnimationFrame]; // update current animation
+
+>>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
+>>>>>>> Stashed changes
         // check if not end of animation
         if (
             this.currAnimationFrame < this.animateImgs.length - 1){
             this.currAnimationFrame += 1;
         }
-        // check if loop
         else if (loop)
         {
             this.currAnimationFrame = 0;
+<<<<<<< Updated upstream
+=======
+        }
+        else if (!loop && kill)
+        {
+
+>>>>>>> Stashed changes
         }
     }
 
@@ -102,14 +143,21 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
         if (this.img != null){
             drawComponent(this, this.img);
         }
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        else 
+        { 
+=======
+>>>>>>> Stashed changes
         else
         {
             ctx.fillStyle = "green";
+>>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
             ctx.rect(this.x , this.y, this.width, this.height);
         }
 
         this.setCorners();
-
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
     }
@@ -120,7 +168,10 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
         this.speedX = 0;
         this.speedY = 0;
         this.isDead = false;
-        ctx.fillStyle = this.color;
+    }
+
+    this.destroy = function(){
+
     }
 
     this.debug = function(){
@@ -212,11 +263,7 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
     // <<<< COLLIDE WITH WALL >>>>
     this.checkCollideWithWall = function (canvas_width, canvas_height, bounceBackSpeed) {
-
         ctx = myGameArea.context;
-        ctx.fillStyle = this.color; //sets text to this component color
-        ctx.font = "10px Arial";
-
 
         //for every corner in this.allCorners
         for (i = 0; i < this.allCorners.length; i++) {
@@ -323,6 +370,12 @@ function updateGameArea() {
     // << UPDATE BUBBLES >>
     bubbles.forEach(bubble => {
         bubble.update();
+
+        // check for bubble collision
+        if (bubble.checkCollideWithComponent(player))
+        {
+            //bubble.endAnimation();
+        }
     });
 
 
@@ -337,17 +390,23 @@ function updateGameArea() {
             player.reset();
         }
     });
-
 }
 
 // ==================== HELPER FUNCTIONS ==============================
 
+<<<<<<< HEAD
+function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, component_array, name, animation_array = null){
+=======
 function animationHandler(){
     player.animate();
 }
 
 function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, component_array, name){
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
+>>>>>>> Stashed changes
     for (i = 0; i < count; i++)
     {
         // set random size
@@ -361,14 +420,19 @@ function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, c
 
         // create new component
         new_component = new component(randSize, randSize,(myGameArea.canvas.width / 2) + randSize, randYPos, name + i , randImage , 4);
+        
+        // set init speed of new component
         new_component.speedX = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
         new_component.speedY = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+
+        new_component.animateImgs = animation_array; // set animation array
 
         component_array.push(new_component);
 
         // DEBUG
         //console.log(new_component.name);
         //console.log("rand_image: ", randImage);
+        //console.log("animate images" , new_component.animateImgs);
     }
 }
 
