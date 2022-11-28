@@ -69,7 +69,7 @@ function startGame() {
     myGameArea.start();
 
     player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player", playerAnim[0], 2, playerAnim);
-    player.start_animation();
+    //player.start_animation();
 
     // random spawn enemies
     //randomSpawnComponents(20, [50, 150], [-2, 2], trash_imgs, trash_components, "trash");
@@ -103,36 +103,23 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
 
     this.animate = function(loop = true, kill = false){
         ctx = myGameArea.context;
-<<<<<<< Updated upstream
-        this.img = playerAnim[this.currAnimationFrame]; // update current animation
-
-=======
-<<<<<<< HEAD
 
         console.log("animate", this.animateImgs);
 
         this.img = this.animateImgs[0]; // update current animation
         
-=======
-        this.img = playerAnim[this.currAnimationFrame]; // update current animation
-
->>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
->>>>>>> Stashed changes
         // check if not end of animation
-        if (
+        if ( 
             this.currAnimationFrame < this.animateImgs.length - 1){
             this.currAnimationFrame += 1;
         }
         else if (loop)
-        {
-            this.currAnimationFrame = 0;
-<<<<<<< Updated upstream
-=======
+        { 
+            this.currAnimationFrame = 0; 
         }
         else if (!loop && kill)
         {
 
->>>>>>> Stashed changes
         }
     }
 
@@ -143,17 +130,8 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
         if (this.img != null){
             drawComponent(this, this.img);
         }
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
         else 
         { 
-=======
->>>>>>> Stashed changes
-        else
-        {
-            ctx.fillStyle = "green";
->>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
             ctx.rect(this.x , this.y, this.width, this.height);
         }
 
@@ -203,7 +181,7 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
         this.allCorners = [this.corner1, this.corner2, this.corner3, this.corner4];
 
         /*
-        //corner 1:  value         position x   position y
+        //corner 1:  value         position x   position y				
         ctx.fillText(this.corner1, this.x - 40, this.y);
         //corner 2:
         ctx.fillText(this.corner2, this.corner2[0] + 10, this.corner2[1]);
@@ -394,22 +372,10 @@ function updateGameArea() {
 
 // ==================== HELPER FUNCTIONS ==============================
 
-<<<<<<< HEAD
 function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, component_array, name, animation_array = null){
-=======
-function animationHandler(){
-    player.animate();
-}
-
-function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, component_array, name){
-
-<<<<<<< Updated upstream
-=======
->>>>>>> f9b4ad1be00a6f3e65b46bf4bab5f73b62ca3cb3
->>>>>>> Stashed changes
     for (i = 0; i < count; i++)
     {
-        // set random size
+        // set random size 
         randSize = getRandomInt(sizeRange[0], sizeRange[1]);
 
         // set random height on screen
@@ -429,7 +395,7 @@ function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, c
 
         component_array.push(new_component);
 
-        // DEBUG
+        // DEBUG 
         //console.log(new_component.name);
         //console.log("rand_image: ", randImage);
         //console.log("animate images" , new_component.animateImgs);
@@ -440,7 +406,7 @@ function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, c
 //                          component >> img
 function drawComponent(com, img)
 {
-    //            draw curr img,    offset position of image based off of scale
+    //            draw curr img,    offset position of image based off of scale 
     ctx.drawImage(img, com.x - com.width/2, com.y - com.height/2, com.width * 2, com.height * 2);
 }
 
@@ -488,3 +454,5 @@ function slowDown() {
         else { player.speedY += 1 } //if moving up, add
     }
 }
+
+
