@@ -1,10 +1,21 @@
-var allEnemies = [];
-var player;
+
+
+
+// CREATE ARRAY OF TRASH IMAGES
+const trash1_img = new Image();
+trash1_img.src = "../img/trash1.png";
+const trash2_img = new Image();
+trash2_img.src = "../img/trash2.png";
+const trash3_img = new Image();
+trash3_img.src = "../img/trash3.png";
+const trash4_img = new Image();
+trash4_img.src = "../img/trash4.png";
+var trash_imgs = [trash1_img, trash2_img, trash3_img, trash4_img];
+
 
 // CREATE BUBBLE IMAGE
 const bubbleImg = new Image();
 bubbleImg.src = "img/bubble1.png";
-
 
 // CREATE FISH ANIMATION
 const frame1 = new Image();
@@ -18,8 +29,14 @@ frame4.src = "img/playerAnim/frame4.png";
 var playerAnim = [frame1, frame2, frame3, frame4];
 
 
+
+// << COMPONENT HOLDER >>
+var bubbles = [];
+var trash_enemies = [];
+var player;
+
+
 var myGameArea = {
-    
     canvas: document.getElementById("gameCanvas"),
     start: function () {
         this.context = this.canvas.getContext("2d");
@@ -38,7 +55,9 @@ function startGame() {
     player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player");
     player.animateImgs = playerAnim;
 
-    randomSpawnEnemies(20, [10, 100], [-5, 5]);
+
+    // random spawn enemies
+    randomSpawnComponents(20, [50, 150], [-2, 2]);
 }
 
 
@@ -57,7 +76,6 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
     this.isDead = false;
     this.img = img;
     this.bounceBackSpeed = bounceBackSpeed;
-    this.img = img;
     this.animateImgs = [];
     this.currAnimationFrame = 0;
 
@@ -66,21 +84,28 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
         this.img = playerAnim[this.currAnimationFrame]; // update current animation
         
         // check if frame is more than length
-        if (this.currAnimationFrame < this.animateImgs.length - 1){
+        if ( 
+            this.currAnimationFrame < this.animateImgs.length - 1){
             this.currAnimationFrame += 1;
         }
-        else {this.currAnimationFrame = 0;}
+        else { this.currAnimationFrame = 0; }
     }
 
     this.update = function () {
         ctx = myGameArea.context;
-        ctx.fillStyle = this.color;
 
+        // <<<<<<<<< DRAW COMPONENT >>>>>>>>>>>>
         if (this.img != null){
             drawComponent(this, this.img);
         }
+        else 
+        { 
+            ctx.fillStyle = "green";
+            ctx.rect(this.x , this.y, this.width, this.height);
+        }
 
         this.setCorners();
+
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
     }
@@ -92,6 +117,19 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
         ctx.fillStyle = this.color;
     }
 
+    this.debug = function(){
+        ctx = myGameArea.context;
+
+        // << DEBUG >>
+        //check for connection to box (parameter)
+        ctx.fillText(this.corner1, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
+
+        ctx.strokeRect(this.x , this.y, this.width, this.height);
+        ctx.strokeStyle = "red";
+
+    }
+
+    // << POSITION AND COLLISIONS >>
     this.setCorners = function(){
         //needs to be in update function so that every frame the computer rechecks the values
 
@@ -134,18 +172,13 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
     // <<<< COLLIDE WITH OTHER COMPONENTS >>>>
     numCollideCorners = 0; //set variable
-    this.checkCollideWithComponent = function (collisionBox) {
+    this.checkCollideWithComponent = function (collisionBox, func) {
 
         ctx = myGameArea.context;
-        ctx.fillStyle = this.color; //sets text to this component color
-        ctx.font = "15px Arial";
-
-        //check for connection to box (parameter)
-        // ctx.fillText(collisionBox.corner1, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
 
         //how many corners collide?
         numCollideCorners = 0;
-        // ctx.fillText(numCollideCorners, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
+        //ctx.fillText(numCollideCorners, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
 
         //for every corner in this.allCorners
         for (i = 0; i < this.allCorners.length; i++) {
@@ -162,12 +195,14 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
             }
         }
 
-        // if collides , end game
+        // if collides
         if (numCollideCorners > 0) {
-            ctx.fillStyle = "black";
+
+            
             this.speedX = 0;
             this.speedY = 0;
             this.isDead = true;
+            
         }
     }
 
@@ -272,7 +307,6 @@ function updateGameArea() {
     myGameArea.clear();
     myGameArea.canvas.width = window.innerWidth - 50;
 
-
     checkGameEnd();
 
     // input listener
@@ -284,49 +318,58 @@ function updateGameArea() {
     //keeps components updated
     player.update();
 
+    trash_enemies.forEach(enemy => {
+        enemy.update();
+    });
 
-    // collide with enemies
-    //player.checkCollideWithComponent(box);
-    //player.checkCollideWithComponent(box2);
-    
+    trash_enemies.forEach(enemy => {
+        player.checkCollideWithComponent(enemy);
+    });
+
 }
+
+// ==================== HELPER FUNCTIONS ==============================
 
 function animationHandler(){
     player.animate();
 }
 
-function randomSpawnEnemies(count , sizeRange, initSpeedRange){
-
-    for (i = 0; i < sizeRange; i++)
+function randomSpawnComponents(count , sizeRange, initSpeedRange, imgs){
+    
+    for (i = 0; i < count; i++)
     {
+        // set random size 
         randSize = getRandomInt(sizeRange[0], sizeRange[1]);
+
+        // set random height on screen
         randYPos = getRandomInt(randSize, myGameArea.canvas.height - randSize);
 
-        box = new component(randSize, randSize,(myGameArea.canvas.width / 2) + randSize, randYPos, "trash", bubbleImg , 4);
-        box.speedX = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
-        box.speedY = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+        // get rand Image
+        randImage = trash_imgs[getRandomInt(0, trash_imgs.length - 1)];
 
+        // create new component
+        new_trash = new component(randSize, randSize,(myGameArea.canvas.width / 2) + randSize, randYPos, "trash" + i , randImage , 4);
+        new_trash.speedX = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+        new_trash.speedY = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+
+        trash_enemies.push(new_trash);
+
+        console.log(new_trash.name);
     }
 }
 
-// ==================== HELPER FUNCTIONS ==============================
 
+// TODO ROTATE IMAGE AS IT BOUNCES ?
 //                          component >> img
 function drawComponent(com, img)
 {
-
-
     //            draw curr img,    offset position of image based off of scale 
     ctx.drawImage(img, com.x - com.width/2, com.y - com.height/2, com.width * 2, com.height * 2);
-
-
-
 }
 
 
 function scrollToPlayer()
 {
-
     window.scrollTo(player.x, player.y - window.innerHeight / 4);
 }
 

@@ -1,4 +1,11 @@
 
+html {
+    background-image: url("img/waterbackground.png");
+    background-size: cover;
+    height: 100%;
+    font-family: 'Papyrus';
+}
+
 .header{
     width: 95%;
     height: 200px;
@@ -11,25 +18,17 @@
     top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
 }
 
 .header #title{
     color: white;
     font-size: 80px;
-    width: 80%;
+    align-self: center;
 }
 
 .header #info{
     color: white;
     font-size: 20px;
-}
-
-html {
-    background-image: url("game/img/background2.jpg");
-    background-size: cover;
-    height: 100%;
-    font-family: 'Papyrus';
 }
 
 .header-overlay{
@@ -38,6 +37,7 @@ html {
     margin: 20px;
 }
 
+/* ========================= Bubble ============================== */
 .buuble{
   position: absolute;
 }
