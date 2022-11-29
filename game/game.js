@@ -1,23 +1,19 @@
-
-
-
 /* ****
-
-
-
-
+ * Author: Sky Casey << skythecreative@gmail.com>>
+ * Created: December 1st, 2022
+ * License: Public Domain
 ***** */
 
 // CREATE ARRAY OF TRASH IMAGES
-const trash1_img = new Image();
-trash1_img.src = "../img/trash1.png";
+//const trash1_img = new Image();
+//trash1_img.src = "../img/trash1.png";
 const trash2_img = new Image();
 trash2_img.src = "../img/trash2.png";
 const trash3_img = new Image();
 trash3_img.src = "../img/trash3.png";
 const trash4_img = new Image();
 trash4_img.src = "../img/trash4.png";
-var trash_imgs = [trash1_img, trash2_img, trash3_img, trash4_img];
+var trash_imgs = [trash2_img, trash3_img, trash4_img];
 
 // CREATE BUBBLE IMAGE
 const bubbleImg = new Image();
@@ -36,7 +32,7 @@ const bubblepop_7 = new Image();
 bubblepop_7.src = "../img/bubblepop_frame7.png";
 var bubblePopAnim = [bubbleImg, bubblepop_2, bubblepop_3, bubblepop_4, bubblepop_5, bubblepop_6, bubblepop_7]
 
-// CREATE FISH ANIMATION
+// << CREATE FISH ANIMATION >>
 const frame1 = new Image();
 frame1.src = "img/playerAnim/frame1.png";
 const frame2 = new Image();
@@ -45,7 +41,17 @@ const frame3 = new Image();
 frame3.src = "img/playerAnim/frame3.png";
 const frame4 = new Image();
 frame4.src = "img/playerAnim/frame4.png";
-var playerAnim = [frame1, frame2, frame3, frame4];
+var rightPlayerAnim = [frame1, frame2, frame3, frame4];
+
+const frame1_l = new Image();
+frame1_l.src = "img/playerAnim/frame1_l.png";
+const frame2_l = new Image();
+frame2_l.src = "img/playerAnim/frame1_l.png";
+const frame3_l = new Image();
+frame3_l.src = "img/playerAnim/frame3_l.png";
+const frame4_l = new Image();
+frame4_l.src = "img/playerAnim/frame4_l.png";
+var leftPlayerAnim = [frame1_l, frame2_l, frame3_l, frame4_l];
 
 // << COMPONENT HOLDER >>
 var bubbles = [];
@@ -54,11 +60,12 @@ var player;
 
 
 var myGameArea = {
-    canvas: document.getElementById("gameCanvas"),
+    canvas: document.getElementById("gamecanvas"),
     start: function () {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGameArea, 20);
+        this.animation = setInterval(animationHandler, 240);
     },
     clear: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -68,18 +75,19 @@ var myGameArea = {
 function startGame() {
     myGameArea.start();
 
-    player = new component(100, 100, (myGameArea.canvas.width / 2), 0, "player", playerAnim[0], 2, playerAnim);
-    //player.start_animation();
+    player = new component(100, 100, (myGameArea.canvas.width / 2), 200, "player");
+    player.animateImgs = rightPlayerAnim;
+    player.animation_enabled = true;
 
     // random spawn enemies
-    //randomSpawnComponents(20, [50, 150], [-2, 2], trash_imgs, trash_components, "trash");
+    randomSpawnComponents(20, [50, 100], [-4, 4], trash_imgs, trash_components, "trash");
 
     // random spawn bubbles
     randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
 }
 
 
-function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, animateImgs = []) {
+function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
     this.color = "red";
     this.width = width;
     this.height = height;
@@ -94,32 +102,41 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
     this.isDead = false;
     this.img = img;
     this.bounceBackSpeed = bounceBackSpeed;
-    var animation = animateImgs;
+
+    // << ANIMATION >>
+    this.animation_enabled = false;
+    this.animateImgs = [];
     this.currAnimationFrame = 0;
+    this.inEndAnimation = false;
 
-    this.start_animation = function(){
-        this.animation = setInterval(this.animate, 240);
-    }
+    this.animate = function(){
+        if (!this.animation_enabled) { return; }
 
-    this.animate = function(loop = true, kill = false){
         ctx = myGameArea.context;
-
-        console.log("animate", this.animateImgs);
-
-        this.img = this.animateImgs[0]; // update current animation
+        this.img = this.animateImgs[this.currAnimationFrame]; // update current animation
         
         // check if not end of animation
         if ( 
             this.currAnimationFrame < this.animateImgs.length - 1){
             this.currAnimationFrame += 1;
         }
-        else if (loop)
+        else
         { 
             this.currAnimationFrame = 0; 
         }
-        else if (!loop && kill)
-        {
+    }
 
+    this.end_animation = function(){
+        ctx = myGameArea.context;
+        this.img = this.animateImgs[this.currAnimationFrame]; // update current animation
+        
+        // check if not end of animation
+        if ( this.currAnimationFrame < this.animateImgs.length - 1){
+            this.currAnimationFrame += 1;
+        }
+        else
+        {
+            this.isDead = true;
         }
     }
 
@@ -132,10 +149,12 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
         }
         else 
         { 
+            ctx.fillStyle = "green";
             ctx.rect(this.x , this.y, this.width, this.height);
         }
 
         this.setCorners();
+
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
     }
@@ -146,10 +165,7 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
         this.speedX = 0;
         this.speedY = 0;
         this.isDead = false;
-    }
-
-    this.destroy = function(){
-
+        ctx.fillStyle = this.color;
     }
 
     this.debug = function(){
@@ -241,7 +257,11 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2, a
 
     // <<<< COLLIDE WITH WALL >>>>
     this.checkCollideWithWall = function (canvas_width, canvas_height, bounceBackSpeed) {
+
         ctx = myGameArea.context;
+        ctx.fillStyle = this.color; //sets text to this component color
+        ctx.font = "10px Arial";
+
 
         //for every corner in this.allCorners
         for (i = 0; i < this.allCorners.length; i++) {
@@ -303,18 +323,22 @@ function KeyDownListener() {
 
         switch (event.key) {
             case "ArrowDown":
+            case "s":
                 // code for "down arrow" key press.
                 movedown();
                 break;
             case "ArrowUp":
+            case "w":
                 // code for "up arrow" key press.
                 moveup();
                 break;
             case "ArrowLeft":
+            case "a":
                 // code for "left arrow" key press.
                 moveleft();
                 break;
             case "ArrowRight":
+            case "d":
                 // code for "right arrow" key press.
                 moveright();
                 break;
@@ -350,9 +374,23 @@ function updateGameArea() {
         bubble.update();
 
         // check for bubble collision
-        if (bubble.checkCollideWithComponent(player))
+        if (bubble.checkCollideWithComponent(player) || bubble.inEndAnimation)
         {
-            //bubble.endAnimation();
+            bubble.inEndAnimation = true;
+            bubble.end_animation();
+        }
+
+        // check for bubble death
+        if (bubble.isDead && bubble.inEndAnimation)
+        {
+            console.log("bubble death");
+            for( var i = 0; i < bubbles.length; i++){ 
+                                   
+                if ( bubbles[i] === bubble) { 
+                    bubbles.splice(i, 1); 
+                    i--; 
+                }
+            }
         }
     });
 
@@ -371,6 +409,10 @@ function updateGameArea() {
 }
 
 // ==================== HELPER FUNCTIONS ==============================
+
+function animationHandler(){
+    player.animate();
+}
 
 function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, component_array, name, animation_array = null){
     for (i = 0; i < count; i++)
@@ -413,7 +455,7 @@ function drawComponent(com, img)
 // move 'camera' to player position
 function scrollToPlayer()
 {
-    window.scrollTo(player.x, player.y - window.innerHeight / 4);
+    window.scrollTo(player.x, player.y - window.innerHeight / 2);
 }
 
 // get random int
@@ -434,10 +476,12 @@ function movedown() {
 }
 
 function moveleft() {
+    player.animateImgs = leftPlayerAnim;
     player.speedX -= 1;
 }
 
 function moveright() {
+    player.animateImgs = rightPlayerAnim;
     player.speedX += 1;
 }
 
