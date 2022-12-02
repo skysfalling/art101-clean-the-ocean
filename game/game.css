@@ -4,7 +4,7 @@
 
     border: 5px solid black;
 
-    margin-top: 10%;
+    margin-top: 200px;
 
     position: absolute;
     top: 50%;
@@ -29,11 +29,12 @@ body
     position: fixed;
 
     top: 1%;
-    right: 1%;
-
-    border: 5px solid black;
+    right: 50px;
 
     width: 200px;
+    height: 150px;
+
+    border: 5px solid black;
 
     text-align: center;
     margin-bottom: 0px;
@@ -48,7 +49,7 @@ body
 .score h2{
     margin-top: 0px;
     margin-bottom: 0px;
-    font-size: 40px;
+    font-size: 30px;
 
     background-color: black;
     width: 102%;
@@ -57,21 +58,33 @@ body
 }
 
 
+
 /* ========== INFO BOX ============= */
 
 .info_box
 {
     color: white;
     background-color: rgba(135, 255, 237, 0.502);
-    position: fixed;
 
-    top: 20%;
-    right: 1%;
+    position: absolute;
+    top: 8%;
+    right: 300px;
 
     border: 5px solid black;
 
-    width: 200px;
+    width: 500px;
+    height: 150px;
 
     text-align: center;
+
+}
+
+.info_box h2 {
+    font-size: 50px;
+    margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.info_box #text {
+    font-size: 28px;
 }

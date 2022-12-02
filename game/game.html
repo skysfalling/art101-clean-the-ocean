@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 
@@ -9,12 +7,9 @@
     <link rel="stylesheet" type="text/css" href="../site.css">
 
     <script src="game.js" defer></script>
-
-
 </head>
 
 <body onload="startGame()">
-
     <div class="header">
         <!-- Center the Title of the page, but remove the top margin-->
         <h1 id="title">Clean The Ocean</h1>
@@ -23,19 +18,23 @@
             <a href="../game/game.html"> New_Game</a>
         </div>
 
+        <div class="info_box">
+            <h2>HOW TO PLAY</h2>
+            <div id="text">
+                Move your fish with 'WASD' or the arrow keys.
+                Pop the bubbles without getting caught in the trash!
+            </div>
+        </div>
+
     </div>
     
     <canvas id="gamecanvas" height="5000px"></canvas>
     
     <div class="score">
-        <h2>Score</h2>
-        <div id="count">0</div>
+        <h2>Bubbles Popped</h2>
+        <div id="count">0/0</div>
     </div>
 
-    <div class="info_box">
-        <h2>HOW TO PLAY</h2>
-        <div id="text">Move your fish with the arrow keys.</div>
-    </div>
 
     <!----
         <div id="end_level_bubble" class="fixed">
@@ -52,8 +51,6 @@
             </div>
         </div>
     </div>
-    
-    
     -->
 
 
