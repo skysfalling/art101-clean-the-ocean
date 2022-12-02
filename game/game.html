@@ -14,16 +14,28 @@
 </head>
 
 <body onload="startGame()">
-    <div class=header>
+
+    <div class="header">
         <!-- Center the Title of the page, but remove the top margin-->
-        <b id="title">Clean The Ocean</b>
-        <p id="info">Move your fish with the arrow keys.</p>
-        <a href="../index.html" style="color: white; font-size: 30px;"> HOME</a>
+        <h1 id="title">Clean The Ocean</h1>
+        <div id="links">
+            <a href="../index.html"> Home</a>
+            <a href="../game/game.html"> New_Game</a>
+        </div>
+
     </div>
     
     <canvas id="gamecanvas" height="5000px"></canvas>
     
-    <div class="score">SCORE</div>
+    <div class="score">
+        <h2>Score</h2>
+        <div id="count">0</div>
+    </div>
+
+    <div class="info_box">
+        <h2>HOW TO PLAY</h2>
+        <div id="text">Move your fish with the arrow keys.</div>
+    </div>
 
     <!----
         <div id="end_level_bubble" class="fixed">

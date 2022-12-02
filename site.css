@@ -7,28 +7,27 @@ html {
 }
 
 .header{
-    width: 95%;
+    position:absolute;
+    width: 100%;
     height: 200px;
     background-color: #39baff53;
-
-    text-align: center;
-
-    /* center on page */
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-left: -10px;
+    margin-top: -10px;
 }
 
 .header #title{
     color: white;
     font-size: 80px;
-    align-self: center;
+    margin-left: 1%;
+    margin-bottom: 0;
+    margin-top: 1%;
 }
 
-.header #info{
+.header #links{
     color: white;
-    font-size: 20px;
+    font-size: 40px;
+    margin-top: -1%;
+    margin-left: 2%;
 }
 
 .header-overlay{

@@ -4,6 +4,8 @@
 
     border: 5px solid black;
 
+    margin-top: 10%;
+
     position: absolute;
     top: 50%;
     left: 50%;
@@ -18,20 +20,58 @@ body
     overflow: hidden;
 }
 
+/* ======= SCORE ======== */
+
 .score
 {
     color: white;
-    background-color: blanchedalmond;
+    background-color: rgba(135, 255, 237, 0.502);
     position: fixed;
 
-    font-size: 50px;
-
     top: 1%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 1%;
+
+    border: 5px solid black;
+
+    width: 200px;
+
     text-align: center;
+    margin-bottom: 0px;
 }
 
-.score #text{
-    
+.score #count{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 100px;
+}
+
+.score h2{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 40px;
+
+    background-color: black;
+    width: 102%;
+    margin-left: -2px;
+    align-self: center;
+}
+
+
+/* ========== INFO BOX ============= */
+
+.info_box
+{
+    color: white;
+    background-color: rgba(135, 255, 237, 0.502);
+    position: fixed;
+
+    top: 20%;
+    right: 1%;
+
+    border: 5px solid black;
+
+    width: 200px;
+
+    text-align: center;
+    margin-bottom: 0px;
 }
