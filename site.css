@@ -95,15 +95,39 @@ html {
 .sourcess {
   position: absolute;
   top: 32%;
-  left: 5%;
+  left: 7%;
   border: 5px solid white;
   word-wrap: break-word;
-  width: 200px;
+  width: 300px;
   text-align: center;
   color: white;
 
-
 }
+
+.images1 {
+  position: absolute;
+  left: 72%;
+  top: 30%
+}
+
+.images2 {
+  position: absolute;
+  left: 7%;
+  top: 80%
+}
+
+.images3 {
+  position: absolute;
+  left: 72%;
+  top: 80%
+}
+
+.images4 {
+  position: absolute;
+  left: 36%;
+  top: 90%
+}
+
 
 /* Top Centered text */
 .top-centered {
