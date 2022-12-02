@@ -37,6 +37,36 @@ html {
     margin: 20px;
 }
 
+.sources {
+    position: absolute;
+    top: 175%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    color: white;
+
+}
+
+.sourcesstuff {
+    position: absolute;
+    top: 155%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: white;
+
+}
+
+.links {
+    position: absolute;
+    top: 140%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: white;
+
+}
+
 /* ========================= Bubble ============================== */
 .buuble{
   position: absolute;
@@ -54,6 +84,7 @@ html {
     padding-left: 20%;
     font-size: 40px;
 }
+
 /* ===================== Positions around a div ======================== */
 
 /* Bottom left text */
@@ -90,36 +121,6 @@ html {
     top: 200%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-.sourcess {
-    position: absolute;
-    top: 175%;
-    left: 10%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    color: white;
-
-}
-
-.sourcessstuff {
-    position: absolute;
-    top: 155%;
-    left: 45%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    color: white;
-
-}
-
-.linkies {
-    position: absolute;
-    top: 140%;
-    left: 40%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    color: white;
-
 }
 
 /* Top Centered text */

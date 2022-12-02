@@ -86,6 +86,9 @@ function startGame() {
     randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
 }
 
+/* // =================================================================== \\ */
+//                                 COMPONENT                                >>
+/* \\ =================================================================== // */
 
 function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
     this.color = "red";

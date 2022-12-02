@@ -18,11 +18,20 @@ body
     overflow: hidden;
 }
 
-.fixed
+.score
 {
+    color: white;
+    background-color: blanchedalmond;
     position: fixed;
-    top: 50%;
+
+    font-size: 50px;
+
+    top: 1%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+
+.score #text{
+    
 }
