@@ -53,29 +53,91 @@ const frame4_l = new Image();
 frame4_l.src = "img/playerAnim/frame4_l.png";
 var leftPlayerAnim = [frame1_l, frame2_l, frame3_l, frame4_l];
 
+// << ELEMENTS FROM HTML >>
+var scoreElement = document.getElementById("count");
+
+function html_element_update() {
+    
+}
+
+
 // << COMPONENT HOLDER >>
 var bubbles = [];
 var trash_components = [];
 var player;
-
-
-var myGameArea = {
-    canvas: document.getElementById("gamecanvas"),
-    start: function () {
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.interval = setInterval(updateGameArea, 20);
-        this.animation = setInterval(animationHandler, 240);
-    },
-    clear: function () {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
-}
+var myGameArea;
 
 function startGame() {
+    myGameArea = {
+        canvas: document.getElementById("gamecanvas"),
+        start: function () {
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.interval = setInterval(this.update, 20);
+            this.animation = setInterval(animationHandler, 240);
+        },
+        update: function(){
+            // refresh
+            myGameArea.clear();
+            myGameArea.canvas.width = window.innerWidth;
+        
+            // input listener
+            KeyDownListener();
+        
+            // scroll window to follow player
+            scrollToPlayer();
+        
+            // << UPDATE ELEMENTS >>
+            html_element_update();
+
+            // << UPDATE PLAYER >>
+            player.update();
+        
+            // << UPDATE BUBBLES >>
+            bubbles.forEach(bubble => {
+                bubble.update();
+        
+                // check for bubble collision
+                if (bubble.checkCollideWithComponent(player) || bubble.inEndAnimation)
+                {
+                    bubble.inEndAnimation = true;
+                    bubble.end_animation();
+                }
+        
+                // check for bubble death
+                if (bubble.isDead && bubble.inEndAnimation)
+                {
+                    console.log("bubble death");
+                    for( var i = 0; i < bubbles.length; i++){ 
+                                            
+                        if ( bubbles[i] === bubble) { 
+                            bubbles.splice(i, 1); 
+                            i--; 
+                        }
+                    }
+                }
+            });
+        
+            // << ENEMY ENGAGEMENT >>
+            trash_components.forEach(enemy => {
+                enemy.update();
+        
+                // check for player collision
+                if (player.checkCollideWithComponent(enemy))
+                {
+                    console.log("collide");
+                    player.reset();
+                }
+            });
+        },
+        clear: function () {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+    }
+
     myGameArea.start();
 
-    player = new component(100, 100, (myGameArea.canvas.width / 2), 200, "player");
+    player = new component(100, 100, (myGameArea.canvas.width * 4), 200, "player");
     player.animateImgs = rightPlayerAnim;
     player.animation_enabled = true;
 
@@ -85,6 +147,8 @@ function startGame() {
     // random spawn bubbles
     randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
 }
+
+
 
 /* // =================================================================== \\ */
 //                                 COMPONENT                                >>
@@ -160,6 +224,9 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
+    
+        this.debug();
+    
     }
 
     this.reset = function(){
@@ -176,11 +243,11 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
         // << DEBUG >>
         //check for connection to box (parameter)
-        ctx.fillText(this.corner1, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
+        ctx.font = "20px Arial";
+        ctx.fillText(this.corner1, this.corner3[0] - this.width + 20 , this.corner3[1] + 30);
 
         ctx.strokeRect(this.x , this.y, this.width, this.height);
         ctx.strokeStyle = "red";
-
     }
 
     // << POSITION AND COLLISIONS >>
@@ -358,58 +425,7 @@ function KeyDownListener() {
     }, true);
 }
 
-function updateGameArea() {
-    // refresh
-    myGameArea.clear();
-    myGameArea.canvas.width = window.innerWidth;
 
-    // input listener
-    KeyDownListener();
-
-    // scroll window to follow player
-    scrollToPlayer();
-
-    // << UPDATE PLAYER >>
-    player.update();
-
-    // << UPDATE BUBBLES >>
-    bubbles.forEach(bubble => {
-        bubble.update();
-
-        // check for bubble collision
-        if (bubble.checkCollideWithComponent(player) || bubble.inEndAnimation)
-        {
-            bubble.inEndAnimation = true;
-            bubble.end_animation();
-        }
-
-        // check for bubble death
-        if (bubble.isDead && bubble.inEndAnimation)
-        {
-            console.log("bubble death");
-            for( var i = 0; i < bubbles.length; i++){ 
-                                   
-                if ( bubbles[i] === bubble) { 
-                    bubbles.splice(i, 1); 
-                    i--; 
-                }
-            }
-        }
-    });
-
-
-    // << ENEMY ENGAGEMENT >>
-    trash_components.forEach(enemy => {
-        enemy.update();
-
-        // check for player collision
-        if (player.checkCollideWithComponent(enemy))
-        {
-            console.log("collide");
-            player.reset();
-        }
-    });
-}
 
 // ==================== HELPER FUNCTIONS ==============================
 
@@ -501,5 +517,3 @@ function slowDown() {
         else { player.speedY += 1 } //if moving up, add
     }
 }
-
-
