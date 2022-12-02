@@ -3,7 +3,7 @@ html {
     background-image: url("img/waterbackground.png");
     background-size: cover;
     height: 100%;
-    font-family: 'Papyrus';
+    font-family: 'OCEAN', sans-serif;
 }
 
 .header{
@@ -92,37 +92,15 @@ html {
 }
 
 .sourcess {
-    position: absolute;
-    top: 45%;
-    left: 15%;
-    transform: translate(-50%, -50%);
-    font-size: 28px;
-    color: white;
-    border: solid;
-    border-color: white;
+  position: absolute;
+  top: 32%;
+  left: 5%;
+  border: 5px solid white;
+  word-wrap: break-word;
+  width: 200px;
+  text-align: center;
+  color: white;
 
-
-}
-
-.sourcessstuff {
-    position: absolute;
-    top: 55%;
-    left: 38%;
-    transform: translate(-50%, -50%);
-    padding-right: 43%;
-    font-size: 18px;
-    color: white;
-
-}
-
-.linkies {
-    position: absolute;
-    top: 73%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-    padding-right: 43%;
-    font-size: 18px;
-    color: white;
 
 }
 
