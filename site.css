@@ -87,26 +87,30 @@ html {
 /* Centered text */
 .centered {
     position: absolute;
-    top: 200%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
 .sourcess {
     position: absolute;
-    top: 175%;
-    left: 10%;
+    top: 45%;
+    left: 15%;
     transform: translate(-50%, -50%);
     font-size: 28px;
     color: white;
+    border: solid;
+    border-color: white;
+
 
 }
 
 .sourcessstuff {
     position: absolute;
-    top: 155%;
-    left: 45%;
+    top: 55%;
+    left: 38%;
     transform: translate(-50%, -50%);
+    padding-right: 43%;
     font-size: 18px;
     color: white;
 
@@ -114,9 +118,10 @@ html {
 
 .linkies {
     position: absolute;
-    top: 140%;
-    left: 40%;
+    top: 73%;
+    left: 35%;
     transform: translate(-50%, -50%);
+    padding-right: 43%;
     font-size: 18px;
     color: white;
 
