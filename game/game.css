@@ -1,16 +1,37 @@
-.gamecanvas {
+#gamecanvas {
     /*border: 5px solid #000000;*/
     background-color: transparent;
 
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0%);
+    border: 5px solid black;
 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 95%;
+    transform: translate(-50%, 0%);
 }
 
 body
 {
     /* removes the scroll bar */
+    position: relative;
     overflow: hidden;
+}
+
+.score
+{
+    color: white;
+    background-color: blanchedalmond;
+    position: fixed;
+
+    font-size: 50px;
+
+    top: 1%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.score #text{
+    
 }
