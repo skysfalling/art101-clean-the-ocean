@@ -1,13 +1,36 @@
 {
     "lose_facts": [
         {
-            "header" : "TEST HEADER",
-            "info" : "test info"
+            "header" : "You LOSE!",
+            "info" : "I know what you're thinking… “OMG I dont litter! I love the ocean!” But out of everything we throw away, less than 10% is actually recycled, and about 80% ends up in either landfills or the ocean!"
         },
         {
-            "header" : "TEST HEADER",
-            "info" : "test info"
-        }
+            "header" : "You LOSE!",
+            "info" : "Every minute, the equivalent of one truckload of trash enters the world’s oceans.""
+        },
+        {
+            "header" : "You LOSE!",
+            "info" : "Swim for your life! There’s currently 363,762,732,605 pounds of TRASH in the world’s oceans."
+
+        },
+        {
+            "header" : "You LOSE!",
+            "info" : " If we continue at our current rate of consumption, by 2050 there will be more trash in the ocean than fish."
+
+        },
+        {
+            "header" : "You LOSE!",
+            "info" : "As time passes, trash breaks down into smaller pieces and microplastics, which contaminates ecosystems and is directly responsible for killing over a MILLION marine animals every year."
+        },
+        {
+            "header" : "You LOSE!",
+            "info" : "Unfortunately, microplastics have already spread across the globe as they’ve been documented everywhere from samples of Arctic Sea ice, to the top of Mount Everest.  A clear plastic produce bag holds the record for deepest piece of plastic, as it currently sits at the bottom of the Mariana Trench, 36,000 feet below sea level."
+        },
+        {
+            "header" : "You LOSE!",
+            "info" : "About 100 million marine animals die each year just from plastic waste!"
+        },
+
     ],
     "win_facts" : []
 }
