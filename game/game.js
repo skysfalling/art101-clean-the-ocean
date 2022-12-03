@@ -69,6 +69,14 @@ function html_element_update() {
     scoreElement.textContent = score + "/" + total_bubble_count;
 }
 
+function lose() {
+
+}
+
+function win() {
+    
+}
+
 
 // =============================== GAME LOGIC =======================================
 
@@ -170,8 +178,8 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
     this.color = "red";
     this.width = width;
     this.height = height;
-    this.speedX = 2;
-    this.speedY = 2;
+    this.speedX = 0;
+    this.speedY = 0;
     this.speedLimit = 20;
     this.startX = x;
     this.startY = y;

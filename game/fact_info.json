@@ -1,0 +1,13 @@
+{
+    "lose_facts": [
+        {
+            "header" : "TEST HEADER",
+            "info" : "test info"
+        },
+        {
+            "header" : "TEST HEADER",
+            "info" : "test info"
+        }
+    ],
+    "win_facts" : []
+}
