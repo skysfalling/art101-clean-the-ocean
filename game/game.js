@@ -64,17 +64,26 @@ var total_bubble_count = 20;
 
 // << ELEMENTS FROM HTML >>
 var scoreElement = document.getElementById("count");
+var loseElement = document.getElementById("lose");
+var winElement = document.getElementById("win");
+
+$("#lose").hide();
+$("#win").hide();
+
+
 
 function html_element_update() {
     scoreElement.textContent = score + "/" + total_bubble_count;
 }
 
 function lose() {
-
+    $("#lose h2").html("your new header");
+    $("#lose").show();
 }
 
 function win() {
-    
+    $("#win h2").html("your new header");
+    $("#win").show();
 }
 
 
@@ -442,8 +451,6 @@ function KeyDownListener() {
         event.preventDefault();
     }, true);
 }
-
-
 
 // ==================== HELPER FUNCTIONS ==============================
 

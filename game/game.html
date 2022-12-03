@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="../site.css">
 
     <script src="game.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
 </head>
 
 <body onload="startGame()">
@@ -26,10 +28,12 @@
                 Pop the bubbles without getting caught in the trash!
             </div>
         </div>
+
+        <button onclick="lose()">Lose</button>
+        <button onclick="win()">Win</button>
+
     </div>
 
-
-    
     <canvas id="gamecanvas" height="5000px"></canvas>
     
     <div class="score">
@@ -37,9 +41,18 @@
         <div id="count">0/0</div>
     </div>
 
-    <div class=fact_box>
+    <div class=fact_box id="lose">
         <h2> You SUCK! </h2>
-        <p> LEARN SOMETHING FROM THIS: pickles are not real. they arent they are just pickled cucumbers. no one would call a pickled apple a pickle, it would still just be an apple. therefore i thinky its stupid to call them pickles. stupid and a lie. when i found out the truth i felt betrayed. i thought they grew in the ground. i thought they were their own species. but alas it is just yet another government lie.
+        <p> 
+            LEARN SOMETHING FROM THIS: pickles are not real. they arent they are just pickled cucumbers. no one would call a pickled apple a pickle, it would still just be an apple. therefore i thinky its stupid to call them pickles. stupid and a lie. when i found out the truth i felt betrayed. i thought they grew in the ground. i thought they were their own species. but alas it is just yet another government lie.
+        </p>
+    </div>
+
+    <div class=fact_box id="win">
+        <h2> You WIN! </h2>
+        <p> 
+            a;lsdjbfa;lsdjvb.d,cmvbnsfoughabs;dflmb, a;ckbj;clbjnafba
+        </p>
     </div>
 
 
