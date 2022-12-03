@@ -53,19 +53,24 @@ const frame4_l = new Image();
 frame4_l.src = "img/playerAnim/frame4_l.png";
 var leftPlayerAnim = [frame1_l, frame2_l, frame3_l, frame4_l];
 
-// << ELEMENTS FROM HTML >>
-var scoreElement = document.getElementById("count");
-
-function html_element_update() {
-    
-}
-
-
 // << COMPONENT HOLDER >>
 var bubbles = [];
 var trash_components = [];
 var player;
 var myGameArea;
+
+var score = 0;
+var total_bubble_count = 20;
+
+// << ELEMENTS FROM HTML >>
+var scoreElement = document.getElementById("count");
+
+function html_element_update() {
+    scoreElement.textContent = score + "/" + total_bubble_count;
+}
+
+
+// =============================== GAME LOGIC =======================================
 
 function startGame() {
     myGameArea = {
@@ -75,6 +80,9 @@ function startGame() {
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             this.interval = setInterval(this.update, 20);
             this.animation = setInterval(animationHandler, 240);
+
+            this.canvas.width = window.innerWidth;
+            console.log(this.canvas.width + " // " + this.canvas.height);
         },
         update: function(){
             // refresh
@@ -92,6 +100,7 @@ function startGame() {
 
             // << UPDATE PLAYER >>
             player.update();
+            player.debug();
         
             // << UPDATE BUBBLES >>
             bubbles.forEach(bubble => {
@@ -107,9 +116,13 @@ function startGame() {
                 // check for bubble death
                 if (bubble.isDead && bubble.inEndAnimation)
                 {
-                    console.log("bubble death");
-                    for( var i = 0; i < bubbles.length; i++){ 
-                                            
+                    // console.log("bubble death");
+
+                    // add to score
+                    score ++;
+
+                    // remove bubble from array
+                    for( var i = 0; i < bubbles.length; i++){          
                         if ( bubbles[i] === bubble) { 
                             bubbles.splice(i, 1); 
                             i--; 
@@ -137,7 +150,7 @@ function startGame() {
 
     myGameArea.start();
 
-    player = new component(100, 100, (myGameArea.canvas.width * 4), 200, "player");
+    player = new component(100, 100, (myGameArea.canvas.width / 2) - 50, 100, "player");
     player.animateImgs = rightPlayerAnim;
     player.animation_enabled = true;
 
@@ -145,10 +158,9 @@ function startGame() {
     randomSpawnComponents(20, [50, 100], [-4, 4], trash_imgs, trash_components, "trash");
 
     // random spawn bubbles
-    randomSpawnComponents(20, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
+    total_bubble_count = 20;
+    randomSpawnComponents(total_bubble_count, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
 }
-
-
 
 /* // =================================================================== \\ */
 //                                 COMPONENT                                >>
@@ -224,9 +236,7 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
-    
-        this.debug();
-    
+        
     }
 
     this.reset = function(){
@@ -474,7 +484,7 @@ function drawComponent(com, img)
 // move 'camera' to player position
 function scrollToPlayer()
 {
-    window.scrollTo(player.x, player.y - window.innerHeight / 2);
+    window.scrollTo(player.x, player.y);
 }
 
 // get random int

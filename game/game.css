@@ -4,8 +4,6 @@
 
     border: 5px solid black;
 
-    margin-top: 200px;
-
     position: absolute;
     top: 50%;
     left: 50%;
@@ -16,7 +14,6 @@
 body
 {
     /* removes the scroll bar */
-    position: relative;
     overflow: hidden;
 }
 
@@ -28,8 +25,8 @@ body
     background-color: rgba(135, 255, 237, 0.502);
     position: fixed;
 
-    top: 1%;
-    right: 50px;
+    bottom: 1%;
+    right: 1%;
 
     width: 200px;
     height: 150px;
@@ -65,17 +62,15 @@ body
 {
     color: white;
     background-color: rgba(135, 255, 237, 0.502);
-
-    position: absolute;
-    top: 8%;
-    right: 300px;
-
     border: 5px solid black;
 
-    width: 500px;
-    height: 150px;
-
     text-align: center;
+    width: 600px;
+
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
 }
 
@@ -87,4 +82,6 @@ body
 
 .info_box #text {
     font-size: 28px;
+    font-style: normal;
+    margin-bottom: 5%;
 }
