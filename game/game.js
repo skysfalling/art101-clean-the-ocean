@@ -53,130 +53,200 @@ const frame4_l = new Image();
 frame4_l.src = "img/playerAnim/frame4_l.png";
 var leftPlayerAnim = [frame1_l, frame2_l, frame3_l, frame4_l];
 
-// << COMPONENT HOLDER >>
+// << GET JSON INFO >>
+var fact_info;
+fetch("./fact_info.json")
+    .then((response) => response.json())
+    .then((data) => set_json(data));
+
+function set_json(data){
+    fact_info = data[0];
+    console.log(fact_info);
+}
+
+// =============================== << HTML ELEMENTS >> ===============================
+// hide initially
+$("#lose").hide();
+$("#win").hide();
+
+// update function for elements
+function html_element_update() {
+    $("#count").html(score + "/" + total_bubble_count);
+    $("#death_count").html("Deaths " + death_count );
+    $("#level").html("Level " + level);
+    $("#menu").html("Menu: " + menu_state);
+    if (score >= total_bubble_count) { win(); }
+}
+
+// === lose ===
+function lose() {
+    if (menu_state == false)
+    {
+        var fact = randomFact();
+        $("#lose h2").html(fact.header);
+        $("#lose p").html(fact.info);
+    
+        menu_state = true;
+        $("#lose").show();
+
+        death_count ++;
+    }
+}
+
+function lose_continue() {
+    menu_state = false;
+    $("#lose").hide();
+}
+
+// === win ===
+function win() {
+    if (!menu_state)
+    {
+        var fact = randomFact(false);
+        $("#win h2").html(fact.header);
+        $("#win p").html(fact.info);
+    
+        menu_state = true;
+        $("#win").show();
+
+        player.reset();
+    }
+}
+
+function new_level() {
+    level ++;
+    
+    newGame(5 * level, 5 * level, (level * 100) + 1000);
+    menu_state = false;
+    $("#win").hide();
+}
+
+function randomFact(lose = true)
+{
+    if (lose){
+        return fact_info.lose_facts[getRandomInt(0, fact_info.lose_facts.length)];
+    }
+    else{
+        return fact_info.win_facts[getRandomInt(0, fact_info.win_facts.length)];
+    }
+}
+
+// ================================ << VARIABLES >> ===============================
 var bubbles = [];
 var trash_components = [];
+
 var player;
-var myGameArea;
+var player_start_y = 100;
+
+var menu_state = false;
+var level = 1;
+var death_count = 0;
 
 var score = 0;
 var total_bubble_count = 20;
 
-// << ELEMENTS FROM HTML >>
-var scoreElement = document.getElementById("count");
-var loseElement = document.getElementById("lose");
-var winElement = document.getElementById("win");
+var gamedebug = false;
 
-$("#lose").hide();
-$("#win").hide();
+// =============================== << GAME LOGIC >> =======================================
+var myGameArea = {
+    canvas: document.getElementById("gamecanvas"),
+    start: function () {
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(this.update, 20);
+        this.animation = setInterval(animationHandler, 240);
 
+        this.canvas.width = window.innerWidth;
 
+        console.log(this.canvas.width + " // " + this.canvas.height);
 
-function html_element_update() {
-    scoreElement.textContent = score + "/" + total_bubble_count;
-}
+        newGame();
+    },
+    update: function(){
+        // refresh
+        myGameArea.clear();
+        myGameArea.canvas.width = window.innerWidth;
+    
+        // input listener
+        KeyDownListener(); 
 
-function lose() {
-    $("#lose h2").html("your new header");
-    $("#lose").show();
-}
+        // scroll window to follow player
+        scrollToPlayer();                
 
-function win() {
-    $("#win h2").html("your new header");
-    $("#win").show();
-}
+        // << UPDATE ELEMENTS >>
+        html_element_update();
 
+        // << UPDATE PLAYER >>
+        player.update();
+    
+        // << UPDATE BUBBLES >>
+        bubbles.forEach(bubble => {
+            bubble.update();
+    
+            // check for bubble collision
+            if ((bubble.checkCollideWithComponent(player) || bubble.inEndAnimation))
+            {
+                bubble.inEndAnimation = true;
+                bubble.end_animation();
+            }
+    
+            // check for bubble death
+            if (bubble.isDead && bubble.inEndAnimation)
+            {
+                // console.log("bubble death");
 
-// =============================== GAME LOGIC =======================================
+                // add to score
+                score ++;
 
-function startGame() {
-    myGameArea = {
-        canvas: document.getElementById("gamecanvas"),
-        start: function () {
-            this.context = this.canvas.getContext("2d");
-            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-            this.interval = setInterval(this.update, 20);
-            this.animation = setInterval(animationHandler, 240);
+                // remove bubble from array
+                removeFromArray(bubbles, bubble);
+            }
+        });
+    
+        // << ENEMY ENGAGEMENT >>
+        trash_components.forEach(enemy => {
+            enemy.update();
+    
+            // check for player collision
+            if (player.checkCollideWithComponent(enemy) && !menu_state)
+            {
+                // remove trash from array
+                removeFromArray(trash_components, enemy);
 
-            this.canvas.width = window.innerWidth;
-            console.log(this.canvas.width + " // " + this.canvas.height);
-        },
-        update: function(){
-            // refresh
-            myGameArea.clear();
-            myGameArea.canvas.width = window.innerWidth;
-        
-            // input listener
-            KeyDownListener();
-        
-            // scroll window to follow player
-            scrollToPlayer();
-        
-            // << UPDATE ELEMENTS >>
-            html_element_update();
-
-            // << UPDATE PLAYER >>
-            player.update();
-            player.debug();
-        
-            // << UPDATE BUBBLES >>
-            bubbles.forEach(bubble => {
-                bubble.update();
-        
-                // check for bubble collision
-                if (bubble.checkCollideWithComponent(player) || bubble.inEndAnimation)
-                {
-                    bubble.inEndAnimation = true;
-                    bubble.end_animation();
-                }
-        
-                // check for bubble death
-                if (bubble.isDead && bubble.inEndAnimation)
-                {
-                    // console.log("bubble death");
-
-                    // add to score
-                    score ++;
-
-                    // remove bubble from array
-                    for( var i = 0; i < bubbles.length; i++){          
-                        if ( bubbles[i] === bubble) { 
-                            bubbles.splice(i, 1); 
-                            i--; 
-                        }
-                    }
-                }
-            });
-        
-            // << ENEMY ENGAGEMENT >>
-            trash_components.forEach(enemy => {
-                enemy.update();
-        
-                // check for player collision
-                if (player.checkCollideWithComponent(enemy))
-                {
-                    console.log("collide");
-                    player.reset();
-                }
-            });
-        },
-        clear: function () {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        }
+                lose();
+                player.reset();
+            }
+        });
+    },
+    clear: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+}
 
+function initGame(){
     myGameArea.start();
+}
 
-    player = new component(100, 100, (myGameArea.canvas.width / 2) - 50, 100, "player");
+function newGame(bubble_count = 5, enemy_count = 5, height = 1000) {
+
+    myGameArea.canvas.height = height;
+
+    // reset values
+    bubbles = [];
+    trash_components = [];
+    score = 0;
+
+    // init player
+    player = new component(75 , 75, (myGameArea.canvas.width / 2) - 50, 100, "player");
     player.animateImgs = rightPlayerAnim;
     player.animation_enabled = true;
 
-    // random spawn enemies
-    randomSpawnComponents(20, [50, 100], [-4, 4], trash_imgs, trash_components, "trash");
-
     // random spawn bubbles
-    total_bubble_count = 20;
+    total_bubble_count = bubble_count;
     randomSpawnComponents(total_bubble_count, [100, 150], [-3, 3], [bubbleImg], bubbles, "bubble", bubblePopAnim);
+
+    // random spawn enemies
+    randomSpawnComponents(enemy_count, [50, 75], [-4, 4], trash_imgs, trash_components, "trash");
 }
 
 /* // =================================================================== \\ */
@@ -254,6 +324,7 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
         this.newPos();
         this.checkCollideWithWall(myGameArea.canvas.width, myGameArea.canvas.height, this.bounceBackSpeed);
         
+        if (gamedebug) { this.debug(); }
     }
 
     this.reset = function(){
@@ -326,7 +397,6 @@ function component(width, height, x, y, name, img = null, bounceBackSpeed = 2) {
 
         //how many corners collide?
         numCollideCorners = 0;
-        //ctx.fillText(numCollideCorners, this.corner3[0] - this.width + 20 , this.corner3[1] + 10);
 
         //for every corner in this.allCorners
         for (i = 0; i < this.allCorners.length; i++) {
@@ -412,11 +482,22 @@ function KeyDownListener() {
         if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
         }
-
-        /*
-        if (event.key != " ") { document.getElementById("buttonPressed").innerHTML = event.key; }
-        else { document.getElementById("buttonPressed").innerHTML = "Spacebar"; }
-        */
+        // debug inputs
+        if (event.key != " ") { $("#keyPressed").html(event.key); }
+        else { $("#keyPressed").html("spacebar"); }
+        
+        // if currently in menu
+        if (menu_state) { 
+            switch (event.key) {
+                case " ":
+                case "Enter":
+                    // code for " " key press.
+                    lose_continue();
+                    break;
+                default:
+                    return; // Quit when this doesn't handle the key event.
+            }
+        }
 
         switch (event.key) {
             case "ArrowDown":
@@ -443,6 +524,8 @@ function KeyDownListener() {
                 // code for " " key press.
                 slowDown();
                 break;
+            case "Enter":
+
             default:
                 return; // Quit when this doesn't handle the key event.
         }
@@ -464,18 +547,21 @@ function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, c
         // set random size 
         randSize = getRandomInt(sizeRange[0], sizeRange[1]);
 
-        // set random height on screen
+        // set random pos on screen
         randYPos = getRandomInt(randSize, myGameArea.canvas.height - randSize);
+        randXPos = getRandomInt(randSize, myGameArea.canvas.width - randSize);
 
         // get rand Image
         randImage = image_array[getRandomInt(0, image_array.length - 1)];
 
         // create new component
-        new_component = new component(randSize, randSize,(myGameArea.canvas.width / 2) + randSize, randYPos, name + i , randImage , 4);
+        new_component = new component(randSize, randSize, randXPos, randYPos, name + i , randImage , 4);
         
         // set init speed of new component
         new_component.speedX = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+        if (new_component.speedX == 0) {new_component.speedX = 1;}
         new_component.speedY = getRandomInt(initSpeedRange[0], initSpeedRange[1]);
+        if (new_component.speedY == 0) {new_component.speedY = 1;}
 
         new_component.animateImgs = animation_array; // set animation array
 
@@ -485,6 +571,15 @@ function randomSpawnComponents(count , sizeRange, initSpeedRange, image_array, c
         //console.log(new_component.name);
         //console.log("rand_image: ", randImage);
         //console.log("animate images" , new_component.animateImgs);
+    }
+}
+
+function removeFromArray(array, element){
+    for( var i = 0; i < array.length; i++){          
+        if ( array[i] === element) { 
+            array.splice(i, 1); 
+            i--; 
+        }
     }
 }
 
@@ -507,6 +602,12 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// toggle component debug
+function debugToggle(){
+    if (gamedebug) {gamedebug = false;}
+    else {gamedebug = true;}
 }
 
 // ====================== MOVEMENT ===============================

@@ -6,12 +6,13 @@
 	<link rel="stylesheet" type="text/css" href="game.css">
     <link rel="stylesheet" type="text/css" href="../site.css">
 
+    <script src="fact_info.json" defer></script>
     <script src="game.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 </head>
 
-<body onload="startGame()">
+<body onload="initGame()">
     <div class="header">
         <!-- Center the Title of the page, but remove the top margin-->
         <h1 id="title">Clean The Ocean</h1>
@@ -21,38 +22,49 @@
             <a href="../testing/test.html"> Testing</a>
         </div>
 
-        <div class="info_box">
+        <div class="info_box" id="how_to_play">
             <h2>HOW TO PLAY</h2>
             <div id="text">
-                Move your fish with 'WASD' or the arrow keys.
+                Move your fish with 'WASD' or the arrow keys. <br>
+                Use SPACEBAR to slow down your fish. <br>
                 Pop the bubbles without getting caught in the trash!
             </div>
         </div>
 
-        <button onclick="lose()">Lose</button>
-        <button onclick="win()">Win</button>
+        <div class="info_box" id="debug">
+            <button onclick="debugToggle()">Game Debug</button>
+            <button onclick="lose()">Lose</button>
+            <button onclick="win()">Win</button>
+            <p id = "keyPressed">Key Pressed</p>
+            <p id = "menu">Menu: </p>
+
+        </div>
+
 
     </div>
 
-    <canvas id="gamecanvas" height="5000px"></canvas>
+    <canvas id="gamecanvas"></canvas>
     
+    <div class="info_box" id="stats">
+        <p id="level">Level 0</p>
+        <p id="death_count">Deaths: -1</p>
+    </div>
+
     <div class="score">
         <h2>Bubbles Popped</h2>
         <div id="count">0/0</div>
     </div>
 
     <div class=fact_box id="lose">
-        <h2> You SUCK! </h2>
-        <p> 
-            LEARN SOMETHING FROM THIS: pickles are not real. they arent they are just pickled cucumbers. no one would call a pickled apple a pickle, it would still just be an apple. therefore i thinky its stupid to call them pickles. stupid and a lie. when i found out the truth i felt betrayed. i thought they grew in the ground. i thought they were their own species. but alas it is just yet another government lie.
-        </p>
+        <h2>header</h2>
+        <p>info</p>
+        <h1>Enter or Spacebar to continue</h1>
     </div>
 
     <div class=fact_box id="win">
-        <h2> You WIN! </h2>
-        <p> 
-            a;lsdjbfa;lsdjvb.d,cmvbnsfoughabs;dflmb, a;ckbj;clbjnafba
-        </p>
+        <h2>header</h2>
+        <p>info</p>
+        <button onclick="new_level()">New Level -></button>
     </div>
 
 

@@ -1,36 +1,44 @@
-{
-    "lose_facts": [
-        {
-            "header" : "You LOSE!",
-            "info" : "I know what you're thinking… “OMG I dont litter! I love the ocean!” But out of everything we throw away, less than 10% is actually recycled, and about 80% ends up in either landfills or the ocean!"
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : "Every minute, the equivalent of one truckload of trash enters the world’s oceans.""
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : "Swim for your life! There’s currently 363,762,732,605 pounds of TRASH in the world’s oceans."
-
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : " If we continue at our current rate of consumption, by 2050 there will be more trash in the ocean than fish."
-
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : "As time passes, trash breaks down into smaller pieces and microplastics, which contaminates ecosystems and is directly responsible for killing over a MILLION marine animals every year."
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : "Unfortunately, microplastics have already spread across the globe as they’ve been documented everywhere from samples of Arctic Sea ice, to the top of Mount Everest.  A clear plastic produce bag holds the record for deepest piece of plastic, as it currently sits at the bottom of the Mariana Trench, 36,000 feet below sea level."
-        },
-        {
-            "header" : "You LOSE!",
-            "info" : "About 100 million marine animals die each year just from plastic waste!"
-        },
-
-    ],
-    "win_facts" : []
-}
+[
+    {
+        "lose_facts" : [
+            {
+                "header" : "Death is inevitable ...",
+                "info" : "I know what you're thinking… “OMG I dont litter! I love the ocean!” But out of everything we throw away, less than 10% is actually recycled, and about 80% ends up in either landfills or the ocean!"
+            },
+            {
+                "header" : "That's a lot of trash ...",
+                "info" : "Every minute, the equivalent of one truckload of trash enters the world’s oceans."
+            },
+            {
+                "header" : "Death is inevitable ...",
+                "info" : "Swim for your life! There’s currently 363,762,732,605 pounds of TRASH in the world’s oceans"
+            },
+            {
+                "header" : "Death is inevitable ...",
+                "info" : " If we continue at our current rate of consumption, by 2050 there will be more trash in the ocean than fish."
+            },
+            {
+                "header" : "Death is inevitable ...",
+                "info" : "As time passes, trash breaks down into smaller pieces and microplastics, which contaminates ecosystems and is directly responsible for killing over a MILLION marine animals every year."
+            },
+            {
+                "header" : "You choked on plastic ...",
+                "info" : "Unfortunately, microplastics have already spread across the globe as they’ve been documented everywhere from samples of Arctic Sea ice, to the top of Mount Everest.  A clear plastic produce bag holds the record for deepest piece of plastic, as it currently sits at the bottom of the Mariana Trench, 36,000 feet below sea level."
+            },
+            {
+                "header" : "Death is inevitable ...",
+                "info" : "About 100 million marine animals die each year just from plastic waste!"
+            },
+            {
+                "header": "PICKLES",
+                "info": "pickles are not real. they arent they are just pickled cucumbers. no one would call a pickled apple a pickle, it would still just be an apple. therefore i thinky its stupid to call them pickles. stupid and a lie. when i found out the truth i felt betrayed. i thought they grew in the ground. i thought they were their own species. but alas it is just yet another government lie."
+            }
+        ],
+        "win_facts" : [
+            {
+                "header" : "YOU WIN",
+                "info": " heres some inspiring quote"
+            }
+        ]
+    }
+]
