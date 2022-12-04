@@ -85,6 +85,8 @@ function lose() {
         var fact = randomFact();
         $("#lose h2").html(fact.header);
         $("#lose p").html(fact.info);
+        $("#lose p1").html(fact.tag);
+
     
         menu_state = true;
         $("#lose").show();
@@ -116,7 +118,7 @@ function win() {
 function new_level() {
     level ++;
     
-    newGame(5 * level, 5 * level, (level * 100) + 1000);
+    newGame((level * 2) + 3, (level * 3) + 3, (level * 100) + 1000);
     menu_state = false;
     $("#win").hide();
 }
